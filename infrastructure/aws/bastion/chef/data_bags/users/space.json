@@ -1,0 +1,6 @@
+{
+  "id"        : "space",
+  "comment"   : "Space",
+  "ssh_keys"  : ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvzgLzibtgQdOCpzaFbHM7rjF90TF9xlGdZShX1VE9G+tINiLivNJWlcvFbxVo6RTSXj19pyipZNOQGWixPkkJ7QfRP+sg3Li2p3D7JoSbgYatzW2pexmBIl3wNK+8huOeMPqnWHt2sp/Y4CnCPG+MKPNZtGSorWZq5fcJ1MCh+mqhBGXsFw1WBQaNLTTq4kQ2eSI7qCrq47AXHki4oOmPZ2D+K2ywEL8JDqYda6bqsekPOlETwKwjvAv658mj6EN+T6RIKW5GFWn30ExCdTljr9YdpPj7tGbug7vh8XZfQv9mls0+uZ3yGu1YFSl/kf/UVGH2NDLlTSbv0TBQCXrt space@wibidata.com"],
+  "environments": ["vagrant","test","dev"]
+}
