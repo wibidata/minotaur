@@ -1,3 +1,3 @@
 #!/bin/sh
 exec 2>&1 
-exec <%=@options[:install_dir]%>/bin/service-control.sh start
+chpst -u <%=@options[:user]%>:<%=@options[:group]> -U <%=@options[:user]%>:<%=@options[:group]> -/ <%=@options[:log_dir]%> <%=@options[:install_dir]%>/bin/service-control.sh start

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 exec 2>&1
-exec svlogd -tt ./main
+chpst -u <%=@options[:user]%>:<%=@options[:group]> svlogd -tt <%=@options[:log_dir]>/svlog
