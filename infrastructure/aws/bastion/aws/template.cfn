@@ -170,7 +170,8 @@
                         "Fn::Join": [
                             "",
                             [
-                                "#!/bin/bash -ex\nexec > >(tee /var/log/user-data.log) 2>&1",
+                                "#!/bin/bash -ex\n",
+                                "exec > >(tee /var/log/user-data.log) 2>&1",
                                 "\n",
                                 "REGION_ID=\"", { "Ref": "AWS::Region" }, "\"\n",
                                 "ENVIRONMENT=\"", { "Ref": "Environment" }, "\"\n",
@@ -178,7 +179,31 @@
                                 "INSTANCE_WAIT_HANDLE_URL=\"", { "Ref": "WaitForInstanceWaitHandle" }, "\"\n",
                                 "REPO_URL=\"", { "Ref": "RepoUrl" }, "\"\n",
                                 "\n",
-                                "WORKING_DIR=\"/deploy\"\nREPO_DIR=\"$WORKING_DIR/repo\"\nBASTION_PATH=\"infrastructure/aws/bastion\"\nINSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)\n\n# Attach public network interface\naws ec2 attach-network-interface --region \"$REGION_ID\" --instance-id \"$INSTANCE_ID\" --network-interface-id \"$PUBLIC_NETWORK_INTERFACE_ID\" --device-index=1\n\nyum -y install git-core\n\ngit clone \"$REPO_URL\" \"$REPO_DIR\"\n\n# Install Chef\ncurl -L https://www.opscode.com/chef/install.sh | bash\n\n# Run Chef\nenvironment=$ENVIRONMENT chef-solo -c \"$REPO_DIR/$BASTION_PATH/chef/solo.rb\" -j \"$REPO_DIR/$BASTION_PATH/chef/solo.json\"\n\n# Notify wait handle\nWAIT_HANDLE_JSON=\"{\\\"Status\\\": \\\"SUCCESS\\\", \\\"Reason\\\": \\\"Done\\\", \\\"UniqueId\\\": \\\"1\\\", \\\"Data\\\": \\\"$INSTANCE_ID\\\"}\"\ncurl -X PUT -H 'Content-Type:' --data-binary \"$WAIT_HANDLE_JSON\" \"$INSTANCE_WAIT_HANDLE_URL\"\n\necho END\n"
+                                "WORKING_DIR=\"/deploy\"\n",
+                                "",
+                                "REPO_DIR=\"$WORKING_DIR/repo\"\n",
+                                "BASTION_PATH=\"infrastructure/aws/bastion\"\n",
+                                "INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)\n",
+                                "\n",
+                                "# Attach public network interface\n",
+                                "aws ec2 attach-network-interface --region \"$REGION_ID\" --instance-id \"$INSTANCE_ID\" --network-interface-id \"$PUBLIC_NETWORK_INTERFACE_ID\" --device-index=1\n",
+                                "\n",
+                                "yum -y install git-core\n",
+                                "\n",
+                                "git clone \"$REPO_URL\" \"$REPO_DIR\"\n",
+                                "\n",
+                                "# Install Chef\n",
+                                "curl -L https://www.opscode.com/chef/install.sh | bash\n",
+                                "\n",
+                                "# Run Chef\n",
+                                "environment=$ENVIRONMENT chef-solo -c \"$REPO_DIR/$BASTION_PATH/chef/solo.rb\" -j \"$REPO_DIR/$BASTION_PATH/chef/solo.json\"\n",
+                                "\n",
+                                "# Notify wait handle\n",
+                                "WAIT_HANDLE_JSON=\"{\\\"Status\\\": \\\"SUCCESS\\\", \\\"Reason\\\": \\\"Done\\\", \\\"UniqueId\\\": \\\"1\\\", \\\"Data\\\": \\\"$INSTANCE_ID\\\"}\"\n",
+                                "curl -X PUT -H 'Content-Type:' --data-binary \"$WAIT_HANDLE_JSON\" \"$INSTANCE_WAIT_HANDLE_URL\"\n",
+                                "\n",
+                                "echo END\n",
+                                ""
                             ]
                         ]
                     }
