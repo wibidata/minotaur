@@ -31,7 +31,8 @@ def get_username():
     iam_connection = iam.connect_to_region("universal", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     return iam_connection.get_user()["get_user_response"]["get_user_result"]["user"]["user_name"]
 
-accounts = { 'bdoss' : { 'regions': ['us-east-1'], 'access-key' : aws_access_key_id, 'secret-key' : aws_secret_access_key} }
+accounts = { 'wibi' : { 'regions': ['us-west-2'], 'access-key' : aws_access_key_id, 'secret-key' :
+    aws_secret_access_key} }
 
 def get_ip(environment):
     connections = establish_connections(accounts)
