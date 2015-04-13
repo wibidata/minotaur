@@ -78,6 +78,10 @@
             "us-east-1": {
                 "hvm": "ami-cc5229a4",
                 "paravirt": "ami-d0ba0cb8"
+            },
+            "us-west-2": {
+                "hvm": "ami-25ebb515",
+                "paravirt": "ami-a94e0c99"
             }
         }
     },

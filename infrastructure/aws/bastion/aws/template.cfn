@@ -74,6 +74,9 @@
         "BastionAmi": {
             "us-east-1": {
                 "Ami": "ami-50842d38"
+            },
+            "us-west-2": {
+                "Ami" : "ami-af86c69f"
             }
         }
     },
