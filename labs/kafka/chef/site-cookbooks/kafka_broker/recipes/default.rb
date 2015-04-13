@@ -32,15 +32,35 @@ user node[:kafka][:user] do
 end
 
 directory node[:kafka][:install_dir] do
+  owner "root"
+  group "root"
+  recursive true
+  mode '0755'
+end
+
+directory node[:kafka][:install_dir] do
   owner node[:kafka][:user]
   group node[:kafka][:group]
-  recursive true
+  mode '0755'
 end
 
 directory node[:kafka][:log_dir] do
   owner "root"
   group "root"
   recursive true
+end
+
+directory node[:kafka][:log_dir] do
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
+  mode '0755'
+end
+
+link  "#{node[:kafka][:log_dir]/logs" do
+  to node[:kafka][:log_dir]
+  link_type :symbolic
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
 end
 
 remote_file "#{node[:kafka][:install_dir]}/#{node[:kafka][:tarball_name]}" do
@@ -50,6 +70,8 @@ remote_file "#{node[:kafka][:install_dir]}/#{node[:kafka][:tarball_name]}" do
 end
 
 execute 'extract kafka source' do
+  user node[:kafka][:user]
+  group node[:kafka][:group]
   command "tar -zxvf #{node[:kafka][:tarball_name]} --strip=1"
   cwd node[:kafka][:install_dir]
   creates "#{node[:kafka][:install_dir]}/bin"
@@ -75,8 +97,8 @@ end
 
 template "#{node[:kafka][:install_dir]}/bin/service-control.sh" do
   source  "service-control.erb"
-  owner "root"
-  group "root"
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
   mode  00755
   variables({
     :install_dir => node[:kafka][:install_dir],
@@ -91,6 +113,8 @@ end
 # Adding kafka to init
 runit_service "kafka" do
   options({
+    :user => node[:kafka][:user],
+    :group => node[:kafka][:group],
     :install_dir => node[:kafka][:install_dir],
     :log_dir => node[:kafka][:log_dir],
     :java_home => node[:java][:java_home],
