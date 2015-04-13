@@ -57,7 +57,7 @@ class Minotaur:
         parser_all.add_argument('-r', '--region', required=True, help='Geographic area to deploy to')
         parser_all.add_argument('-z', '--availability-zone', required=True, help='Isolated location to deploy to')
         parser_all.add_argument('-i', '--instance-type', default='m1.small', help='AWS EC2 instance type of nat and bastion instances to deploy')
-        parser_all.add_argument('-u', '--repo-url', default='https://git@github.com/stealthly/minotaur.git', help='Public repository url where user info is stored')
+        parser_all.add_argument('-u', '--repo-url', default='https://git@github.com/wibidata/minotaur.git', help='Public repository url where user info is stored')
         parser_all.add_argument('-c', '--cidr-block', default='10.0.0.0/21', type=check_subnet,
                                 help='Subnet mask of VPC network to create, must be x.x.x.x/21')
         self.args, self.unknown = self.parser.parse_known_args()
