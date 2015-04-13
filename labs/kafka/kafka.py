@@ -26,7 +26,7 @@ else:
 
 class Kafka(Lab):
     def __init__(self, environment, deployment, region, zone, instance_count,
-                 instance_type, zk_version, kafka_url):
+                 instance_type, zk_version, kafka_url, repo_url):
         super(Kafka, self).__init__(environment, deployment, region, zone)
         vpc_id = self.get_vpc(environment).id
         private_subnet_id = self.get_subnet("private." + environment, vpc_id, zone).id
@@ -34,7 +34,7 @@ class Kafka(Lab):
         role_name = self.get_role_name("GenericDev")
         # m1, c1, m2 instances need old paravirtualized ami. New instances need hvm enabled ami.
         if instance_type in ["m1.small", "m1.medium", "m1.large", "m1.xlarge", "c1.medium",
-                             "c1.large", "m2.xlarge", "m2.2xlarge","m2.4xlarge"]:
+                             "c1.large", "m2.xlarge", "m2.2xlarge", "m2.4xlarge"]:
             virtualization = "paravirt"
         else:
             virtualization = "hvm"
@@ -49,6 +49,7 @@ class Kafka(Lab):
         self.parameters.append(("VpcId",            vpc_id))
         self.parameters.append(("PrivateSubnetId",  private_subnet_id))
         self.parameters.append(("AsgTopicArn",      topic_arn))
+        self.parameters.append(("RepoUrl",          repo_url))
         self.parameters.append(("RoleName",         role_name))
         self.parameters.append(("Virtualization",   virtualization))
 
@@ -62,12 +63,13 @@ parser.add_argument('-n', '--num-nodes', type=int, default=1, help='Number of in
 parser.add_argument('-i', '--instance-type', default='m1.small', help='AWS EC2 instance type to deploy')
 parser.add_argument('-v', '--zk-version', default='3.4.6', help='The Zookeeper version to deploy')
 parser.add_argument('-k', '--kafka-url', default='', help='The Kafka URL')
+parser.add_argument('-u', '--repo-url', default='https://git@github.com/wibidata/minotaur.git', help='Public repository url where cookbooks are stored')
 
 def main(parser):
     args, unknown = parser.parse_known_args()
     enable_debug(args)
     lab = Kafka(args.environment, args.deployment, args.region, args.availability_zone, 
-        str(args.num_nodes), args.instance_type, args.zk_version, args.kafka_url)
+        str(args.num_nodes), args.instance_type, args.zk_version, args.kafka_url, args.repo_url)
     lab.deploy()
 
 if __name__ == '__main__':
