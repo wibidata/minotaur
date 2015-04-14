@@ -28,3 +28,6 @@ default[:kafka][:interface] = 'eth0'
 
 default[:kafka][:zk_servers] = nil
 default[:kafka][:kafka_brokers] = nil
+
+default[:java][:jdk_version] = 8
+default[:java][:install_version] = "oracle"
