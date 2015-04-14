@@ -56,11 +56,10 @@ directory node[:kafka][:log_dir] do
   mode '0755'
 end
 
-link  "#{node[:kafka][:log_dir]}/logs" do
-  to node[:kafka][:log_dir]
-  link_type :symbolic
+directory "#{node[:kafka][:log_dir]}/svlog" do
   owner node[:kafka][:user]
   group node[:kafka][:group]
+  mode '0755'
 end
 
 remote_file "#{node[:kafka][:install_dir]}/#{node[:kafka][:tarball_name]}" do
@@ -79,6 +78,13 @@ end
 
 file "#{node[:kafka][:install_dir]}/#{node[:kafka][:tarball_name]}" do
     action :delete
+end
+
+link "#{node[:kafka][:install_dir]}/logs" do
+  to node[:kafka][:log_dir]
+  link_type :symbolic
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
 end
 
 %w[server.properties].each do |template_file|
