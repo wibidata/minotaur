@@ -26,7 +26,7 @@ else:
 
 class Zookeeper(Lab):
     def __init__(self, environment, deployment, region, zone,
-                 instance_count, instance_type, zk_version):
+                 instance_count, instance_type, zk_version, repo_url):
         super(Zookeeper, self).__init__(environment, deployment, region, zone)
         vpc_id = self.get_vpc(environment).id
         private_subnet_id = self.get_subnet("private." + environment, vpc_id, zone).id
@@ -48,6 +48,7 @@ class Zookeeper(Lab):
         self.parameters.append(("NumberOfNodes",    instance_count))
         self.parameters.append(("InstanceType",     instance_type))
         self.parameters.append(("AsgTopicArn",      topic_arn))
+        self.parameters.append(("RepoUrl",          repo_url))
         self.parameters.append(("RoleName",         role_name))
         self.parameters.append(("Virtualization",   virtualization))
 
@@ -60,12 +61,13 @@ parser.add_argument('-z', '--availability-zone', required=True, help='Isolated l
 parser.add_argument('-n', '--num-nodes', type=int, default=1, help='Number of instances to deploy')
 parser.add_argument('-i', '--instance-type', default='m1.small', help='AWS EC2 instance type to deploy')
 parser.add_argument('-v', '--zk-version', default='3.4.6', choices=['3.3.6', '3.4.6', '3.5.0-alpha'], help='The Zookeeper version to deploy')
+parser.add_argument('-u', '--repo-url', default='https://git@github.com/wibidata/minotaur.git', help='Public repository url where user info is stored')
 
 def main(parser):
     args, unknown = parser.parse_known_args()
     enable_debug(args)
     lab = Zookeeper(args.environment, args.deployment, args.region, args.availability_zone, 
-        str(args.num_nodes), args.instance_type, args.zk_version)
+        str(args.num_nodes), args.instance_type, args.zk_version, args.repo_url)
     lab.deploy()
 
 if __name__ == '__main__':
