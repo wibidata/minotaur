@@ -8,7 +8,7 @@ default[:kafka][:tarball_url] = "https://archive.apache.org/dist/kafka/#{node[:k
 default[:kafka][:provided_url] = nil
 
 default[:kafka][:install_dir] = "/opt/apache/kafka"
-default[:kafka][:data_dir] = "/var/lib/kafka"
+default[:kafka][:data_dir] = "/var/kafka"
 default[:kafka][:log_dir] = "/var/log/kafka"
 
 default[:kafka][:log_flush_interval] = 10000
