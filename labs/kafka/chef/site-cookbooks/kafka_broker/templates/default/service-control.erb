@@ -75,7 +75,7 @@ case "$1" in
             # For compatibility with runit we cannot backgroud 
             # ourselves with a '&' at the end, though we do
             # need to exec.
-            exec $CMD $MAIN $SERVER_CONFIG >$LOG_OUT 2>$LOG_ERR
+            exec $CMD $MAIN $SERVER_CONFIG >>$LOG_OUT 2>>$LOG_ERR
         else 
             echo "Service already running"
             exit 1
