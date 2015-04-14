@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from cgnaws import *
-import sys
+import collections
 import requests
 import json
 
@@ -39,21 +39,29 @@ def get_instances_info(instances):
     return info
 
 def main():
+    name_counts = collections.Counter();
     connections = establish_connections(accounts)
     reservations = get_reservations(connections)
     instances = get_instances(reservations)
     instances_info = get_instances_info(instances)
+
     for cloud_name in instances_info:
         for instance in instances_info[cloud_name]:
             if "Name" in instance["tags"]:
-                if '.' in instance["tags"]["Name"]:
-                    environment = instance["tags"]["Name"].split('.')[-1]
+                name = instance["tags"]["Name"]
+                name_parts = name.split('.')
+                if len(name_parts) > 1:
+                    environment = name_parts[-1]
                 else:
                     environment = None
             else:
+                name_parts = None
                 environment = None
             if instance["private-ip"] == None:
                 continue
+            if name_parts is not None:
+                name_counts[name] += 1
+                name_parts[0] += "%02d" % name_counts[name]
             # Create dns entry
             hostname = {"host": instance["private-ip"]}
             payload = {"value": json.dumps(hostname), "ttl": 100}
@@ -63,6 +71,10 @@ def main():
                 url = '/'.join(["http://127.0.0.1:4001/v2/keys/skydns/aws", "ip-"+instance["private-ip"].replace('.', '-')])
             r = requests.put(url, params=payload)
             print r.text
+            if name_parts != None:
+                url = '/'.join(["http://127.0.0.1:4001/v2/keys/skydns/aws"] + list(reversed(name_parts)))
+                r = requests.put(url, params=payload)
+                print r.text
             # Create reverse dns entry
             if environment != None:
                 hostname = {"host": '.'.join(["ip-"+instance["private-ip"].replace('.', '-'), environment, "aws"])}
