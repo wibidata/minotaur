@@ -56,7 +56,7 @@ directory node[:kafka][:log_dir] do
   mode '0755'
 end
 
-link  "#{node[:kafka][:log_dir]/logs" do
+link  "#{node[:kafka][:log_dir]}/logs" do
   to node[:kafka][:log_dir]
   link_type :symbolic
   owner node[:kafka][:user]
