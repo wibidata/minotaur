@@ -1,4 +1,4 @@
-default[:kafka][:version] = "0.8.2-beta"
+default[:kafka][:version] = "0.8.2.1"
 default[:kafka][:scala_version] = "2.11"
 
 default[:kafka][:tarball_base] = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"

@@ -46,7 +46,7 @@ optional arguments:
 
 `[instances flavor]` defaults to m1.small
 
-`[source url]` defaults to https://archive.apache.org/dist/kafka/0.8.2-beta/kafka_2.11-0.8.2-beta.tar.gz
+`[source url]` defaults to https://archive.apache.org/dist/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tar.gz
 
 **Example:**
 
