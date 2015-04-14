@@ -26,7 +26,8 @@ with open("/root/.aws/config") as f:
         elif line.startswith('aws_secret_access_key'):
             aws_secret_access_key = line.split()[-1]
 
-accounts = { 'bdoss' : { 'regions': ['us-east-1'], 'access-key' : aws_access_key_id, 'secret-key' : aws_secret_access_key} }
+accounts = { 'wibi' : { 'regions': ['us-west-2'], 'access-key' : aws_access_key_id, 'secret-key' :
+    aws_secret_access_key} }
 
 def get_instances_info(instances):
     info = {}
