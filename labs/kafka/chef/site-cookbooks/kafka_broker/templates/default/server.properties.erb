@@ -39,6 +39,8 @@ max.socket.request.bytes=104857600
 # The directory under which to store kafka data
 log.dirs=<%=node[:kafka][:data_dir]%>
 
+auto.create.topics.enable=<%=node[:kafka][:auto_create_topics]%>
+
 ############################# Log Flush Policy #############################
 
 # The number of messages to accept before forcing a flush of data to disk

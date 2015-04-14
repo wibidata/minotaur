@@ -8,7 +8,7 @@ default[:kafka][:tarball_url] = "https://archive.apache.org/dist/kafka/#{node[:k
 default[:kafka][:provided_url] = nil
 
 default[:kafka][:install_dir] = "/opt/apache/kafka"
-default[:kafka][:data_dir] = "/var/kafka"
+default[:kafka][:data_dir] = "/var/lib/kafka"
 default[:kafka][:log_dir] = "/var/log/kafka"
 
 default[:kafka][:log_flush_interval] = 10000
@@ -23,7 +23,7 @@ default[:kafka][:broker_id] = 0
 default[:kafka][:port] = 9092
 default[:kafka][:jmx_port] = 9999
 default[:kafka][:threads] = nil
-
+default[:kafka][:auto_create_topics] = false
 default[:kafka][:interface] = 'eth0'
 
 default[:kafka][:zk_servers] = nil
