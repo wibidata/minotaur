@@ -71,7 +71,7 @@ template "#{config_path}" do
 end
 
 template "#{env_path}" do
-  source "zookeeper.env.erb"
+  source "zookeeper-env.sh.erb"
   user "root"
   group "root"
   mode "0755"
@@ -80,6 +80,7 @@ end
 # Creating data_dir
 directory node[:zookeeper][:data_dir] do
   owner node[:zookeeper][:user]
+  group node[:zookeeper][:user]
 end
 
 # Configuring myid
@@ -95,15 +96,20 @@ end
 # Creating log_dir
 directory node[:zookeeper][:log_dir] do
   owner node[:zookeeper][:user]
+  group node[:zookeeper][:user]
+end
+directory "#{node[:zookeeper][:log_dir]}/svlog" do
+  owner node[:zookeeper][:user]
+  group node[:zookeeper][:user]
 end
 
 # Adding zookeeper to init
 runit_service 'zookeeper' do
   options({
-    :user => node[:zookeeper][:user]
-    :group => node[:zookeeper][:user]
-    :log_dir => node[:zookeeper][:log_dir]
-    :exec => executable_path
+    :user => node[:zookeeper][:user],
+    :group => node[:zookeeper][:user],
+    :log_dir => node[:zookeeper][:log_dir],
+    :exec => executable_path,
   })
   action [:enable, :start]
 end
