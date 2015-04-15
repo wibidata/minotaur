@@ -2,8 +2,6 @@
 #
 
 # Overriding default attributes
-node.override['build-essential']['compile_time'] = true
-node.override['java']['jdk_version'] = '7'
 node.override['zookeeper']['version'] = ENV['zk_version'].to_s.empty? ? node[:zookeeper][:version] : ENV['zk_version']
 
 # Forming path's and uri's
@@ -21,6 +19,11 @@ config_path = ::File.join(node[:zookeeper][:install_dir],
                           'conf',
                           'zoo.cfg')
 
+env_path = ::File.join(node[:zookeeper][:install_dir],
+                          "zookeeper-#{node[:zookeeper][:version]}",
+                          'conf',
+                          'zookeeper-env.sh')
+
 if node['zookeeper']['version'] == '3.3.6'
   node.override['zookeeper']['checksum'] = 'eb311ec0479a9447d075a20350ecfc5cf6a2a6d9842d13b59d7548430ac37521'
 elsif node['zookeeper']['version'] == '3.5.0-alpha'
@@ -32,7 +35,6 @@ end
 node.override['zookeeper']['servers'] = ENV['zk_servers'].to_s.empty? ? node[:zookeeper][:servers] : ENV['zk_servers']
 
 # Java and runit are provided by corresponding cookbooks
-include_recipe 'build-essential::default'
 include_recipe 'java::default'
 include_recipe 'runit'
 
@@ -50,14 +52,29 @@ zookeeper node[:zookeeper][:version] do
   action      :install
 end
 
+directory node[:zookeeper][:install_dir] do
+    user "root"
+    group "root"
+    recursive true
+    mode "0755"
+end
+
 # Crafting a config
 template "#{config_path}" do
   source "zoo.cfg.erb"
-  user node[:zookeeper][:user]
+  user "root"
+  group "root"
   mode "0755"
   variables({
     :zk_servers => node[:zookeeper][:servers]
   })
+end
+
+template "#{env_path}" do
+  source "zookeeper.env.erb"
+  user "root"
+  group "root"
+  mode "0755"
 end
 
 # Creating data_dir
@@ -75,11 +92,18 @@ template "#{node[:zookeeper][:data_dir]}/myid" do
   not_if { node[:zookeeper][:servers].nil? }
 end
 
+# Creating log_dir
+directory node[:zookeeper][:log_dir] do
+  owner node[:zookeeper][:user]
+end
+
 # Adding zookeeper to init
 runit_service 'zookeeper' do
-  default_logger true
   options({
-    exec: executable_path
+    :user => node[:zookeeper][:user]
+    :group => node[:zookeeper][:user]
+    :log_dir => node[:zookeeper][:log_dir]
+    :exec => executable_path
   })
   action [:enable, :start]
 end
