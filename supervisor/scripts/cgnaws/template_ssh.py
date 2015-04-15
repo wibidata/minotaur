@@ -44,10 +44,12 @@ def get_ip(environment):
 
 pattern = re.compile("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|BASTION_IP")
 
-config = """Host *{0}*
+config = """Host *{0}*.aws
 IdentityFile /root/.ssh/{1}
 User ubuntu
 ProxyCommand ssh -i /root/.ssh/private.key {2}@{3} nc $(dig +short %h) %p
+UserKnownHostsFile /dev/null
+StrictHostKeyChecking no
 """
 
 if __name__ == "__main__":
