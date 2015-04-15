@@ -98,10 +98,6 @@ directory node[:zookeeper][:log_dir] do
   owner node[:zookeeper][:user]
   group node[:zookeeper][:user]
 end
-directory "#{node[:zookeeper][:log_dir]}/svlog" do
-  owner node[:zookeeper][:user]
-  group node[:zookeeper][:user]
-end
 
 # Adding zookeeper to init
 runit_service 'zookeeper' do
