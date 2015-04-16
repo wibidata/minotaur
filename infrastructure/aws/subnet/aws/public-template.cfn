@@ -210,7 +210,7 @@
                 "NetworkAclId": {
                     "Ref": "NetworkAcl"
                 },
-                "RuleNumber": "201",
+                "RuleNumber": "202",
                 "Protocol": "17",
                 "RuleAction": "allow",
                 "Egress": "false",
