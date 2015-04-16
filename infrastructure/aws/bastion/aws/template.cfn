@@ -112,6 +112,10 @@
                                 ]
                             ]
                         }
+                    },
+                    {
+                        "Key": "Environment.ntp",
+                        "Value": { "Ref": "Environment" }
                     }
                 ]
             }
@@ -188,6 +192,16 @@
                                 "# Attach public network interface\n",
                                 "aws ec2 attach-network-interface --region \"$REGION_ID\" --instance-id \"$INSTANCE_ID\" --network-interface-id \"$PUBLIC_NETWORK_INTERFACE_ID\" --device-index=1\n",
                                 "\n",
+                                "# Remove default route to private subnet\n",
+                                "route del default dev eth0\n",
+                                "\n",
+                                "# restart ntpd to listen on 2nd interface\n"
+                                "if [ -e /etc/ntp.conf ]; then\n",
+                                "    echo \"interface listen eth1\" >> /etc/ntp.conf\n",
+                                "    service ntpd restart\n",
+                                "fi\n",
+                                "\n",
+                                "yum -y update\n",
                                 "yum -y install git-core\n",
                                 "\n",
                                 "git clone \"$REPO_URL\" \"$REPO_DIR\"\n",
