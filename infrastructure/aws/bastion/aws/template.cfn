@@ -112,10 +112,6 @@
                                 ]
                             ]
                         }
-                    },
-                    {
-                        "Key": "Environment.ntp",
-                        "Value": { "Ref": "Environment" }
                     }
                 ]
             }
@@ -195,7 +191,7 @@
                                 "# Remove default route to private subnet\n",
                                 "route del default dev eth0\n",
                                 "\n",
-                                "# restart ntpd to listen on 2nd interface\n"
+                                "# restart ntpd to listen on 2nd interface\n",
                                 "if [ -e /etc/ntp.conf ]; then\n",
                                 "    echo \"interface listen eth1\" >> /etc/ntp.conf\n",
                                 "    service ntpd restart\n",
@@ -268,6 +264,11 @@
                                 ]
                             ]
                         },
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Environment.ntp",
+                        "Value": { "Ref": "Environment" },
                         "PropagateAtLaunch": "true"
                     }
                 ]
