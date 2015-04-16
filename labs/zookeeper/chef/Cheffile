@@ -1,3 +1,4 @@
 site 'http://community.opscode.com/api/v1'
 
 cookbook 'zookeeper', :git => 'https://github.com/SimpleFinance/chef-zookeeper.git'
+cookbook 'ntp', '~> 1.8.2'

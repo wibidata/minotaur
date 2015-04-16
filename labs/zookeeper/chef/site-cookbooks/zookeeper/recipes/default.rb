@@ -3,6 +3,7 @@
 
 # Overriding default attributes
 node.override['zookeeper']['version'] = ENV['zk_version'].to_s.empty? ? node[:zookeeper][:version] : ENV['zk_version']
+node.override[:ntp][:servers] = ENV['ntp_servers'].to_s.empty? ? node[:ntp][:servers] : ENV['ntp_servers'].split(',')
 
 # Forming path's and uri's
 executable_path = ::File.join(node[:zookeeper][:install_dir],
@@ -28,6 +29,10 @@ if node['zookeeper']['version'] == '3.3.6'
   node.override['zookeeper']['checksum'] = 'eb311ec0479a9447d075a20350ecfc5cf6a2a6d9842d13b59d7548430ac37521'
 elsif node['zookeeper']['version'] == '3.5.0-alpha'
   node.override['zookeeper']['checksum'] = '87814f3afa9cf846db8d7e695e82e11480f7b19d79d8f146e58c4aefb4289bf4'
+end
+
+if node[:ntp][:servers]
+    include_recipe 'ntp'
 end
 
 # Get zookeeper servers either from ENV or from chef environment provided by knife
