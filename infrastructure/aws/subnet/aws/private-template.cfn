@@ -92,7 +92,7 @@
                 }
             }
         },
-        "InboundNetworkAclEntry": {
+        "InboundTcpNetworkAclEntry": {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
@@ -109,7 +109,7 @@
                 }
             }
         },
-        "InboundNetworkAclEntry": {
+        "InboundUdpNetworkAclEntry": {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
@@ -126,7 +126,7 @@
                 }
             }
         },
-        "OutboundNetworkAclEntry": {
+        "OutboundTcpNetworkAclEntry": {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
@@ -143,13 +143,13 @@
                 }
             }
         },
-        "OutboundNetworkAclEntry": {
+        "OutboundUdpNetworkAclEntry": {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "NetworkAcl"
                 },
-                "RuleNumber": "100",
+                "RuleNumber": "200",
                 "Protocol": "17",
                 "RuleAction": "allow",
                 "Egress": "true",
