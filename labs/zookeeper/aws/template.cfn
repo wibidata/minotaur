@@ -188,7 +188,7 @@
                                 "ZK_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",
                                 "\n",
                                 "NODES_FILTER=\"Name=tag:Environment.ntp,Values=$ENVIRONMENT\"\n",
-                                "QUERY=\"Reservations[].Instances[].NetworkInterfaces[].PrivateIpAddress\"\n",
+                                "QUERY=\"Reservations[].Instances[].NetworkInterfaces[0].PrivateIpAddress\"\n",
                                 "NTP_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",
                                 "\n",
                                 "# Run Chef\n",
@@ -310,6 +310,12 @@
                         "IpProtocol": "tcp",
                         "FromPort": "1024",
                         "ToPort": "65535",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "123",
+                        "ToPort": "123",
                         "CidrIp": "0.0.0.0/0"
                     }
                 ]
