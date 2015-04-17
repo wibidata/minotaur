@@ -96,8 +96,8 @@
                 "paravirt": "ami-d0ba0cb8"
             },
             "us-west-2": {
-                "hvm": "ami-25ebb515",
-                "paravirt": "ami-a94e0c99"
+                "hvm": "ami-4d5b707d",
+                "paravirt": "ami-854c67b5"
             }
         }
     },
