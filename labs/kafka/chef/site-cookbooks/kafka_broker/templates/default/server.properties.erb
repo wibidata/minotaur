@@ -3,14 +3,20 @@
     <% @ip_addresses = Chef::IPFinder.find(node, :private_ipv4) %>
     <% @kafka_brokers = @kafka_brokers.split(',') %>
     <% @ip_addresses.each do |ip| %>
-        <% @node.override[:kafka][:broker_id] = @kafka_brokers.include?(ip) ? @kafka_brokers.index(ip) : 0 %>
-        <% break if not (@myid == 0) %>
+        <% if @kafka_brokers.include?(ip) %>
+            <% @node.override[:kafka][:broker_id] = @kafka_brokers.index(ip) %>
+            <% @node.override[:kafka][:host_name] = ip %>
+            <% break %>
+        <% end %>
     <% end %>
 <% end %>
 
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id=<%=node[:kafka][:broker_id]%>
 
+<% if node[:kafka][:host_name] %>
+host.name=<%=node[:kafka][:host_name]%>
+<% end %>
 ############################# Socket Server Settings #############################
 
 # The port the socket server listens on

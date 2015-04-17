@@ -20,6 +20,7 @@ default[:kafka][:user] = "kafka"
 default[:kafka][:group] = "kafka"
 
 default[:kafka][:broker_id] = 0
+default[:kafka][:host_name] = nil
 default[:kafka][:port] = 9092
 default[:kafka][:jmx_port] = 9999
 default[:kafka][:threads] = nil
