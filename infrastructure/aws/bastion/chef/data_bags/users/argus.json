@@ -2,5 +2,5 @@
   "id"        : "argus",
   "comment"   : "Argus",
   "ssh_keys"  : ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMFV7ZajBlM80HA8Vyx2CrZa9sEJaJRVqVyRU8sUUIxl4fL45zeTS9TkyyIw9fjcUbMspauPlmRlMU8HKMszUxxLZhdO93tQFUq75KGsGnudknvmhAbO/lC8847nVZsXzIR25Viol+YwU53jikr+7ch8FVduqpTI1+h6DnB6rT5GjcYJV68Uyn8tEtB9WA6izW42HExnOZwurKbOn1RlKPAFScl8e4i6/yga9oYxWvVcMJXIeGQn7R18LkX8QkUoQZK2ftrpl05+VvSV6HrjlnUIOjR+KrKYwBHPgPiSVbmpQSiJ8X+T0S6akfwuhrZMPVmYdAOqDwCaawh0wYZoY/ argus@wibidata.com"],
-  "environments": ["vagrant","dev","test","prod"]
+  "environments": ["vagrant","dev","test","prod","poc"]
 }
