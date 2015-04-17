@@ -187,6 +187,7 @@
                                 "QUERY=\"Reservations[].Instances[].NetworkInterfaces[].PrivateIpAddress\"\n",
                                 "ZK_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",
                                 "\n",
+                                "# Find nodes that have a ntp server for the environment\n",
                                 "NODES_FILTER=\"Name=tag:Environment.ntp,Values=$ENVIRONMENT\"\n",
                                 "QUERY=\"Reservations[].Instances[].NetworkInterfaces[0].PrivateIpAddress\"\n",
                                 "NTP_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",

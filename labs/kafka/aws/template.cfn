@@ -201,11 +201,17 @@
                                 "QUERY=\"Reservations[].Instances[].NetworkInterfaces[].PrivateIpAddress\"\n",
                                 "ZK_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",
                                 "\n",
+                                "# Find nodes that have a ntp server for the environment\n",
+                                "NODES_FILTER=\"Name=tag:Environment.ntp,Values=$ENVIRONMENT\"\n",
+                                "QUERY=\"Reservations[].Instances[].NetworkInterfaces[0].PrivateIpAddress\"\n",
+                                "NTP_SERVERS=$(aws ec2 describe-instances --region \"$REGION\" --filters \"$NODES_FILTER\" --query \"$QUERY\" | jq --raw-output 'join(\",\")')\n",
+                                "\n",
                                 "# Run Chef\n",
                                 "kafka_url=\"$KAFKA_URL\" \\\n",
                                 "zk_version=\"$ZK_VERSION\" \\\n",
                                 "zk_servers=\"$ZK_SERVERS\" \\\n",
-                                "kafka_brokers=$\"$KAFKA_BROKERS\" \\\n",
+                                "kafka_brokers=\"$KAFKA_BROKERS\" \\\n",
+                                "ntp_servers=\"$NTP_SERVERS\" \\\n",
                                 "chef-solo -c \"$REPO_DIR/$LAB_PATH/chef/solo.rb\" -j \"$REPO_DIR/$LAB_PATH/chef/solo_kb.json\"\n",
                                 "\n",
                                 "# Create default topics, such as \"raw\" and \"normalized\"\n",
@@ -329,6 +335,12 @@
                         "IpProtocol": "tcp",
                         "FromPort": "1024",
                         "ToPort": "65535",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "udp",
+                        "FromPort": "123",
+                        "ToPort": "123",
                         "CidrIp": "0.0.0.0/0"
                     }
                 ]

@@ -1,3 +1,4 @@
+depends 'ntp'
 depends 'runit'
 depends 'zookeeper'
 depends 'hostsfile'

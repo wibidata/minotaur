@@ -2,3 +2,4 @@ site 'https://supermarket.getchef.com/api/v1'
 
 cookbook 'hostsfile', '~> 2.4.5'
 cookbook 'zookeeper', :git => 'https://github.com/SimpleFinance/chef-zookeeper.git'
+cookbook 'ntp', '~> 1.8.2'

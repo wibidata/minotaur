@@ -7,12 +7,17 @@ include_recipe 'runit'
 # Must be in a form of comma-separated list
 node.override['kafka']['zk_servers'] = ENV['zk_servers'].to_s.empty? ? node[:kafka][:zk_servers] : ENV['zk_servers']
 node.override['kafka']['brokers'] = ENV['kafka_brokers'].to_s.empty? ? node[:kafka][:brokers] : ENV['kafka_brokers']
+node.override[:ntp][:servers] = ENV['ntp_servers'].to_s.empty? ? node[:ntp][:servers] : ENV['ntp_servers'].split(',')
 
 # Override versions and url attributes if tarball url provided
 if not ENV['kafka_url'].to_s.empty?
   node.override['kafka']['tarball_url'] = ENV['kafka_url']
   node.override['kafka']['tarball_base'] = "kafka"
   node.override['kafka']['tarball_name'] = "#{node[:kafka][:tarball_base]}.tar.gz"
+end
+
+if node[:ntp][:servers]
+    include_recipe 'ntp'
 end
 
 # If no zk_servers configured - install and use local zookeeper
