@@ -320,6 +320,16 @@
                 ]
             }
         },
+        "PrivateSecurityGroupNtpIngress": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {"Ref": "PrivateSecurityGroup"},
+                "IpProtocol": "udp",
+                "FromPort": "123",
+                "ToPort": "123",
+                "SourceSecurityGroupId": {"Ref": "PrivateSecurityGroup"}
+            }
+        },
         "WaitForInstanceWaitHandle": {
             "Type": "AWS::CloudFormation::WaitConditionHandle",
             "Properties": {
